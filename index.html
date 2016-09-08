@@ -41,15 +41,37 @@
         </style>
     </head>
     <body ng-app="app" ng-controller="ctrl">
-        <div ng-repeat="item in ret.reObj" class="page-header" class="row">
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="imgId" style="max-width: 800px">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div ng-repeat="item in ret.reObj" class="page-header" class="row">
             <h1>{{item.recvname | decodeURI}} <small>{{item.content | decodeURI}}</small><small>&nbsp;({{item.addtime | decodeURI4date}})</small></h1>
             <div class="test_ans" ng-repeat="image in item.imagelist" class="col-xs-6 col-md-3">
-                <a href="{{image.imgURL | largeImg}}" class="thumbnail">
+                <a href="javascript:void(0);" ng-click="showBigPhoto(image);" class="thumbnail">
                     <img src="{{image.imgURL}}" alt="picpicpic">
                 </a>
             </div>
         </div>
     </body>
+
 <script>
     var myAppModule = angular.module("app",[]);
     myAppModule.controller('ctrl',['$scope','$http',function($scope,$http){
@@ -63,9 +85,12 @@
                     }
                 );
 
-        $scope.htmlDecode=function(s){
-            console.log(decodeURIComponent(s));
-            return $('<div/>').html(s).text();
+        $scope.showBigPhoto=function(image){
+            var path = image.imgURL;
+            var c = path.indexOf("107/") + 4;
+
+            $("#imgId").attr("src",path.substr(0,c)+"l"+path.substr(c));
+            $('#myModal').modal();
         };
     }]);
     myAppModule.filter("decodeURI",function(){
