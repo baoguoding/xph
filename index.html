@@ -64,11 +64,17 @@
     </div>
     <div ng-repeat="item in ret.reObj" class="page-header" class="row">
             <h1>{{item.recvname | decodeURI}} <small>{{item.content | decodeURI}}</small><small>&nbsp;({{item.addtime | decodeURI4date}})</small></h1>
-            <div class="test_ans" ng-repeat="image in item.imagelist" class="col-xs-6 col-md-3">
-                <a href="javascript:void(0);" ng-click="showBigPhoto(image);" class="thumbnail">
-                    <img src="{{image.imgURL}}" alt="picpicpic">
-                </a>
-            </div>
+            <ANY ng-if="item.video != ''">
+                这里是老师上传的视屏，请下载：
+                <a href="{{item.video}}">下载</a>
+            </ANY>
+            <ANY ng-if="item.video == ''">
+                <div class="test_ans" ng-repeat="image in item.imagelist" class="col-xs-6 col-md-3">
+                    <a href="javascript:void(0);" ng-click="showBigPhoto(image);" class="thumbnail">
+                        <img src="{{image.imgURL}}" alt="picpicpic">
+                    </a>
+                </div>
+            </ANY>
         </div>
     </body>
 
